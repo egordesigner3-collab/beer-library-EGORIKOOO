@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🍺 Пивная библиотека</title>
+  <style>
+    :root {
+      --bg: #f8f5f0;
+      --card-bg: #ffffff;
+      --text: #2c241b;
+      --accent: #d4a574;
+      --accent-hover: #b88a5c;
+      --border: #e0d6c8;
+      --success: #4a90e2;
+      --tag-bg: #f0ebe4;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 20px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 20px 0;
+    }
+    h1 { font-size: 2.2rem; margin-bottom: 8px; }
+    .subtitle { color: #6b5b4f; font-size: 1.1rem; }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 25px;
+      background: var(--card-bg);
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .controls input, .controls select {
+      flex: 1 1 180px;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 15px;
+      background: #fff;
+    }
+    .controls input:focus, .controls select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
+    .card-img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      background: #eee;
+    }
+    .card-body { padding: 16px; flex-grow: 1; display: flex; flex-direction: column; }
+    .card-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 4px; }
+    .card-brand { color: #777; font-size: 0.9rem; margin-bottom: 10px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .tag {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 20px;
+      background: var(--tag-bg);
+      color: #555;
+    }
+    .tag.rating { background: #fff3cd; color: #856404; font-weight: 600; }
+    .tag.repeat { background: #d4edda; color: #155724; }
+    .card-desc {
+      font-size: 0.95rem;
+      color: #444;
+      margin-top: auto;
+      margin-bottom: 12px;
+    }
+    .btn-tried {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid var(--border);
+      background: transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.2s;
+      color: var(--text);
+    }
+    .btn-tried.active {
+      background: var(--success);
+      color: #fff;
+      border-color: var(--success);
+    }
+
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 40px;
+      color: #888;
+      font-size: 1.1rem;
+    }
+
+    @media (max-width: 640px) {
+      h1 { font-size: 1.6rem; }
+      .controls { flex-direction: column; }
+      .controls input, .controls select { flex: 1 1 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🍺 Пивная библиотека</h1>
+    <p class="subtitle">Честные обзоры, фильтры и честный рейтинг</p>
+  </header>
+
+  <div class="controls">
+    <input type="text" id="search" placeholder="🔍 Поиск по названию или бренду...">
+    <select id="f-country"><option value="">🌍 Все страны</option></select>
+    <select id="f-style"><option value="">🍺 Все стили</option></select>
+    <select id="f-rating"><option value="">⭐ Любая оценка</option></select>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <script>
+    // ==========================================
+    // 🍺 ТВОЯ БАЗА ДАННЫХ (РЕДАКТИРУЙ НИЖЕ)
+    // ==========================================
+    const beers = [
+      {
+        id: 1,
+        name: "Schlossbacher Hefe-Weizen",
+        brand: "Schlossbacher",
+        country: "Германия",
+        style: "Хефевайцен",
+        abv: 5.4,
+        rating: 5,
+        repeat: true,
+        // Замени ссылку на свою картинку
+        img: "https://images.unsplash.com/photo-1608270586620-2485246391d8?auto=format&fit=crop&w=600&q=80",
+        taste: "Вкус свежий, мягкий, с насыщенными пшеничными тонами. Фруктово-дрожжевое послевкусие.",
+        where: "О'Кей, специализированные пивные"
+      },
+      {
+        id: 2,
+        name: "Guinness Draught",
+        brand: "Guinness",
+        country: "Ирландия",
+        style: "Стаут",
+        abv: 4.2,
+        rating: 5,
+        repeat: true,
+        img: "https://images.unsplash.com/photo-1571613316887-6f8d5cbf7ef7?auto=format&fit=crop&w=600&q=80",
+        taste: "Классика. Кофейные и шоколадные ноты, кремовая плотная пена.",
+        where: "Практически везде"
+      },
+      {
+        id: 3,
+        name: "Punk IPA",
+        brand: "BrewDog",
+        country: "Шотландия",
+        style: "IPA",
+        abv: 5.4,
+        rating: 4,
+        repeat: false,
+        img: "https://images.unsplash.com/photo-1535958636474-b021ee887813?auto=format&fit=crop&w=600&q=80",
+        taste: "Горьковатый, цитрусовый, тропический хмель. Для любителей яркого характера.",
+        where: "Красное & Белое, онлайн"
+      }
+      // 👇 ЧТОБЫ ДОБАВИТЬ НОВОЕ ПИВО:
+      // Скопируй блок от { до }, вставь ниже и поменяй данные.
+    ];
+
+    // ==========================================
+    // ⚙️ ЛОГИКА (НЕ ТРОГАЙ, ЕСЛИ НЕ УВЕРЕН)
+    // ==========================================
+    const grid = document.getElementById('grid');
+    const searchInput = document.getElementById('search');
+    const fCountry = document.getElementById('f-country');
+    const fStyle = document.getElementById('f-style');
+    const fRating = document.getElementById('f-rating');
+
+    // Заполняем фильтры уникальными значениями
+    const countries = [...new Set(beers.map(b => b.country))].sort();
+    const styles = [...new Set(beers.map(b => b.style))].sort();
+    const ratings = [...new Set(beers.map(b => b.rating))].sort((a, b) => b - a);
+
+    countries.forEach(c => fCountry.innerHTML += `<option value="${c}">${c}</option>`);
+    styles.forEach(s => fStyle.innerHTML += `<option value="${s}">${s}</option>`);
+    ratings.forEach(r => fRating.innerHTML += `<option value="${r}">${r}/5 ⭐</option>`);
+
+    function render() {
+      grid.innerHTML = '';
+      const q = searchInput.value.toLowerCase().trim();
+      const c = fCountry.value;
+      const s = fStyle.value;
+      const r = fRating.value;
+
+      const filtered = beers.filter(b => {
+        const matchQ = !q || b.name.toLowerCase().includes(q) || b.brand.toLowerCase().includes(q);
+        const matchC = !c || b.country === c;
+        const matchS = !s || b.style === s;
+        const matchR = !r || b.rating >= parseInt(r);
+        return matchQ && matchC && matchS && matchR;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div class="no-results">Ничего не найдено 🍺<br>Попробуй изменить фильтры</div>';
+        return;
+      }
+
+      filtered.forEach(b => {
+        const tried = localStorage.getItem(`beer_tried_${b.id}`) === 'true';
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${b.img}" class="card-img" alt="${b.name}" onerror="this.src='https://via.placeholder.com/600x400?text=Нет+фото'">
+          <div class="card-body">
+            <div class="card-title">${b.name}</div>
+            <div class="card-brand">${b.brand} • ${b.abv}%</div>
+            <div class="tags">
+              <span class="tag rating">⭐ ${b.rating}/5</span>
+              <span class="tag">${b.style}</span>
+              ${b.repeat ? '<span class="tag repeat"> Повторить</span>' : ''}
+            </div>
+            <div class="card-desc">
+              <b>Где:</b> ${b.where}<br>
+              <b>Вкус:</b> ${b.taste}
+            </div>
+            <button class="btn-tried ${tried ? 'active' : ''}" data-id="${b.id}">
+              ${tried ? '✅ Пробовал' : '🍺 Пробовал?'}
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      // Навешиваем обработчики на кнопки
+      document.querySelectorAll('.btn-tried').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const id = e.currentTarget.dataset.id;
+          const isTried = localStorage.getItem(`beer_tried_${id}`) === 'true';
+          localStorage.setItem(`beer_tried_${id}`, !isTried);
+          render(); // Перерисовываем, чтобы обновить кнопку
+        });
+      });
+    }
+
+    // Слушатели событий
+    searchInput.addEventListener('input', render);
+    fCountry.addEventListener('change', render);
+    fStyle.addEventListener('change', render);
+    fRating.addEventListener('change', render);
+
+    // Первый запуск
+    render();
+  </script>
+</body>
+</html>

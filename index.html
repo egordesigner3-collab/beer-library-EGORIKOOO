@@ -85,7 +85,7 @@
     .scroll-btn:hover { background: #fff; color: #000; }
 
     /* ===== LIBRARY SECTION ===== */
-    .library { padding: 80px 20px; max-width: 1200px; margin: 0 auto; }
+    .library { padding: 80px 20px; max-width: 1400px; margin: 0 auto; }
     .section-header {
       display: flex;
       justify-content: space-between;
@@ -95,138 +95,255 @@
       gap: 20px;
     }
     .section-title {
-      font-size: 2rem;
+      font-size: 2.5rem;
       font-weight: 700;
       text-transform: uppercase;
-      border-left: 4px solid #000;
-      padding-left: 16px;
+      border-left: 5px solid #000;
+      padding-left: 20px;
+      letter-spacing: -0.02em;
     }
     .beer-counter {
-      font-size: 0.9rem;
-      font-weight: 600;
-      padding: 8px 16px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 10px 20px;
       background: #000;
       color: #fff;
-      border-radius: 4px;
+      border-radius: 50px;
       text-transform: uppercase;
       letter-spacing: 0.05em;
+      flex-shrink: 0;
     }
+    
+    /* ===== FILTERS ===== */
     .controls {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 40px;
-      padding: 16px;
-      border: 1px solid #000;
+      gap: 12px;
+      margin-bottom: 50px;
+      padding: 20px;
+      background: #f5f5f5;
+      border-radius: 50px;
     }
     .controls input, .controls select {
-      flex: 1 1 160px;
-      padding: 12px 14px;
-      border: 1px solid #000;
+      flex: 1 1 200px;
+      padding: 14px 20px;
+      border: none;
       background: #fff;
+      border-radius: 50px;
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       font-weight: 500;
+      color: #666;
+      transition: all 0.3s;
     }
     .controls input:focus, .controls select:focus {
       outline: none;
-      background: #000;
-      color: #fff;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
+    .controls input::placeholder {
+      color: #999;
+    }
+
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
     }
+    
+    /* ===== NEW CARD DESIGN ===== */
     .card {
-      background: #fff;
-      border: 1px solid #000;
+      background: linear-gradient(180deg, #f8f8f8 0%, #2a2a2a 100%);
+      border-radius: 24px;
       overflow: hidden;
-      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+      min-height: 520px;
       display: flex;
       flex-direction: column;
-      height: 100%;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
     }
+    
     .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      transform: translateY(-8px);
     }
-    .card-img-wrapper {
+    
+    /* Тёмная морда для светлой части карточки */
+    .card-watermark-dark {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
-      height: 280px;
+      height: 60%;
+      background-image: url('img/cat-watermark-dark.png');
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.3;
+      z-index: 1;
+    }
+    
+    /* Светлая морда для тёмной части (подробная информация) */
+    .card-watermark-light {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('img/cat-watermark-light.png');
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.15;
+      z-index: 1;
+    }
+    
+    .card-rating {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background: #000;
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      z-index: 2;
+    }
+    
+    .card-beer-image {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 60%;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #f5f5f5;
-      padding: 20px;
-      flex-shrink: 0;
+      padding: 40px 20px 20px;
     }
-    .card-img {
-      max-width: 100%;
+    
+    .card-beer-image img {
       max-height: 100%;
+      max-width: 100%;
       object-fit: contain;
-      transition: transform 0.3s;
+      filter: drop-shadow(0 8px 24px rgba(0,0,0,0.3));
     }
-    .card:hover .card-img { transform: scale(1.05); }
-    .card-body { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
-    .card-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-      line-height: 1.2;
-    }
-    .card-brand {
-      font-size: 0.8rem;
-      color: #666;
-      margin-bottom: 12px;
-    }
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 14px;
-      flex-shrink: 0;
-    }
-    .tag {
-      font-size: 0.7rem;
-      padding: 4px 10px;
-      border: 1px solid #000;
-      font-weight: 600;
-    }
-    .tag.rating { background: #000; color: #fff; }
-    .card-desc {
-      font-size: 0.9rem;
-      line-height: 1.5;
-      margin-bottom: 16px;
-      color: #444;
+    
+    .card-content {
+      position: relative;
+      z-index: 2;
+      background: linear-gradient(180deg, transparent 0%, #1a1a1a 20%);
+      padding: 20px;
       flex-grow: 1;
+      display: flex;
+      flex-direction: column;
     }
-    .btn-tried {
-      width: 100%;
-      padding: 12px;
-      border: 2px solid #000;
-      background: transparent;
-      font-family: 'Space Grotesk', sans-serif;
+    
+    .card-title {
+      font-size: 1.25rem;
       font-weight: 700;
-      font-size: 0.85rem;
+      color: #fff;
+      margin-bottom: 8px;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+    }
+    
+    .card-brand {
+      font-size: 0.9rem;
+      color: #ccc;
+      margin-bottom: 24px;
+    }
+    
+    .card-buttons {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .btn {
+      padding: 14px 20px;
+      border-radius: 50px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
       cursor: pointer;
       transition: all 0.3s;
-      margin-top: auto;
-      flex-shrink: 0;
+      border: none;
+      text-align: center;
     }
-    .btn-tried:hover { background: #000; color: #fff; }
-    .btn-tried.active {
-      background: #000;
+    
+    .btn-primary {
+      background: #fff;
+      color: #000;
+    }
+    
+    .btn-primary:hover {
+      background: #f0f0f0;
+      transform: scale(1.02);
+    }
+    
+    .btn-secondary {
+      background: transparent;
       color: #fff;
-      animation: popIn 0.3s ease;
+      border: 2px solid #fff;
     }
-    @keyframes popIn {
-      0% { transform: scale(0.95); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
+    
+    .btn-secondary:hover {
+      background: #fff;
+      color: #000;
+    }
+    
+    /* ===== EXPANDED CARD ===== */
+    .card.expanded .card-content {
+      display: none;
+    }
+    
+    .card.expanded .card-beer-image {
+      display: none;
+    }
+    
+    .card.expanded .card-watermark-dark {
+      display: none;
+    }
+    
+    .card-details {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+      z-index: 10;
+      padding: 80px 24px 24px;
+      overflow-y: auto;
+      color: #fff;
+    }
+    
+    .card.expanded .card-details {
+      display: block;
+    }
+    
+    .detail-row {
+      margin-bottom: 20px;
+    }
+    
+    .detail-label {
+      font-size: 0.8rem;
+      color: #888;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    
+    .detail-value {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #fff;
+    }
+    
+    .detail-value strong {
+      color: #fff;
     }
 
     /* ===== FOOTER ===== */
@@ -241,23 +358,30 @@
     .footer div { margin: 8px 0; }
 
     /* ===== МОБИЛЬНАЯ ВЕРСИЯ ===== */
+    @media (max-width: 1200px) {
+      .grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    
     @media (max-width: 640px) {
+      .grid { grid-template-columns: 1fr; }
       .hero-title { font-size: 2.2rem; }
       .hero-image { width: 160px; height: 160px; }
       .hero-subtitle { font-size: 0.7rem; }
       .scroll-btn { padding: 10px 24px; font-size: 0.75rem; }
       .section-header { flex-direction: column; align-items: flex-start; }
-      .section-title { font-size: 1.5rem; }
-      .beer-counter { font-size: 0.8rem; padding: 6px 12px; }
-      .controls { padding: 10px; gap: 8px; }
-      .controls input, .controls select { flex: 1 1 100%; padding: 10px 12px; font-size: 0.8rem; }
-      .grid { grid-template-columns: 1fr; }
-      .card-img-wrapper { height: 240px; padding: 15px; }
-      .card-body { padding: 14px; }
-      .card-title { font-size: 1rem; }
-      .card-brand { font-size: 0.75rem; }
-      .card-desc { font-size: 0.85rem; }
-      .btn-tried { padding: 10px; font-size: 0.8rem; }
+      .section-title { font-size: 1.8rem; }
+      .beer-counter { font-size: 0.75rem; padding: 8px 16px; }
+      .controls { padding: 15px; border-radius: 30px; }
+      .controls input, .controls select { 
+        flex: 1 1 100%; 
+        padding: 12px 16px; 
+        font-size: 0.85rem;
+        border-radius: 25px;
+      }
     }
   </style>
 </head>
@@ -331,7 +455,7 @@
         beers.sort((a, b) => a.name.localeCompare(b.name, 'ru'));
         
         // Обновляем счётчик
-        beerCounter.textContent = `Всего пивасов: ${beers.length}`;
+        beerCounter.textContent = `ВСЕГО ПИВАСОВ: ${beers.length}`;
         
         // Заполняем фильтры
         const countries = [...new Set(beers.map(b => b.country))].sort();
@@ -384,30 +508,57 @@
 
       filtered.forEach(b => {
         const tried = localStorage.getItem('beer_' + b.id) === 'true';
+        const verdict = b.repeat === true ? '✅ Рекомендуется' : '❌ Не рекомендуется';
         const card = document.createElement('div');
         card.className = 'card';
+        
         card.innerHTML = 
-          '<div class="card-img-wrapper">' +
-            '<img src="' + b.img + '" class="card-img" alt="' + b.name + '" loading="lazy" onerror="this.src=\'https://via.placeholder.com/400x400?text=Нет+фото\'">' +
+          '<div class="card-rating">' + b.rating + '/5</div>' +
+          '<div class="card-watermark-dark"></div>' +
+          '<div class="card-watermark-light"></div>' +
+          '<div class="card-beer-image">' +
+            '<img src="' + b.img + '" alt="' + b.name + '" loading="lazy" onerror="this.src=\'https://via.placeholder.com/300x400?text=Нет+фото\'">' +
           '</div>' +
-          '<div class="card-body">' +
+          '<div class="card-content">' +
             '<div class="card-title">' + b.name + '</div>' +
             '<div class="card-brand">' + b.brand + ' • ' + b.abv + '%</div>' +
-            '<div class="tags">' +
-              '<span class="tag rating">' + b.rating + '/5</span>' +
-              '<span class="tag">' + b.style + '</span>' +
-              (b.repeat ? '<span class="tag">Повторить</span>' : '') +
+            '<div class="card-buttons">' +
+              '<button class="btn btn-primary" data-id="' + b.id + '">' +
+                (tried ? funnyPhrases[b.id % funnyPhrases.length] : 'Пробовал?') +
+              '</button>' +
+              '<button class="btn btn-secondary btn-details">Подробнее</button>' +
             '</div>' +
-            '<div class="card-desc"><b>Где:</b> ' + b.where + '<br><b>Вкус:</b> ' + b.taste + '</div>' +
-            '<button class="btn-tried ' + (tried ? 'active' : '') + '" data-id="' + b.id + '">' +
-              (tried ? funnyPhrases[b.id % funnyPhrases.length] : 'Пробовал?') +
-            '</button>' +
+          '</div>' +
+          '<div class="card-details">' +
+            '<div class="detail-row">' +
+              '<div class="detail-label">Вердикт</div>' +
+              '<div class="detail-value">' + verdict + '</div>' +
+            '</div>' +
+            '<div class="detail-row">' +
+              '<div class="detail-label">Стиль</div>' +
+              '<div class="detail-value">' + b.style + '</div>' +
+            '</div>' +
+            '<div class="detail-row">' +
+              '<div class="detail-label">Где купить</div>' +
+              '<div class="detail-value"><strong>📍</strong> ' + b.where + '</div>' +
+            '</div>' +
+            '<div class="detail-row">' +
+              '<div class="detail-label">Вкус</div>' +
+              '<div class="detail-value">' + b.taste + '</div>' +
+            '</div>' +
+            '<div class="card-buttons" style="margin-top: 30px;">' +
+              '<button class="btn btn-primary btn-close">Скрыть</button>' +
+            '</div>' +
           '</div>';
+        
         grid.appendChild(card);
       });
 
-      document.querySelectorAll('.btn-tried').forEach(btn => {
-        btn.addEventListener('click', function() {
+      // Кнопки "Пробовал"
+      document.querySelectorAll('.btn-primary:not(.btn-close)').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          if (this.classList.contains('btn-details') || this.classList.contains('btn-close')) return;
+          
           const id = this.getAttribute('data-id');
           const current = localStorage.getItem('beer_' + id) === 'true';
           
@@ -415,7 +566,6 @@
             localStorage.setItem('beer_' + id, 'true');
             const randomPhrase = funnyPhrases[id % funnyPhrases.length];
             this.textContent = randomPhrase;
-            this.classList.add('active');
             setTimeout(() => {
               localStorage.setItem('beer_' + id, 'false');
               render();
@@ -424,6 +574,20 @@
             localStorage.setItem('beer_' + id, 'false');
             render();
           }
+        });
+      });
+
+      // Кнопки "Подробнее"
+      document.querySelectorAll('.btn-details').forEach(btn => {
+        btn.addEventListener('click', function() {
+          this.closest('.card').classList.add('expanded');
+        });
+      });
+
+      // Кнопки "Скрыть"
+      document.querySelectorAll('.btn-close').forEach(btn => {
+        btn.addEventListener('click', function() {
+          this.closest('.card').classList.remove('expanded');
         });
       });
     }

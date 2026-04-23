@@ -106,8 +106,8 @@
       letter-spacing: 0.05em;
     }
 
-    /* ===== ФИЛЬТРЫ (ПИЛЮЛИ) ===== */
-    .controls {
+/* ===== ФИЛЬТРЫ (ПИЛЮЛИ) ===== */
+.controls {
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
@@ -121,8 +121,26 @@
 .controls input, .controls select {
   flex: 1;
   min-width: 200px;
+  padding: 14px 20px;
+  border: none;
+  background: #fff;
+  border-radius: 50px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.3s;
 }
-    .grid {
+
+.controls input:focus, .controls select:focus {
+  outline: 2px solid #000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.controls input::placeholder {
+  color: #999;
+}    .grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 20px;

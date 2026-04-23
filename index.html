@@ -75,7 +75,33 @@
     .scroll-btn:hover { background: #fff; color: #000; }
 
     /* ===== LIBRARY SECTION ===== */
-    .library { padding: 60px 20px; max-width: 1400px; margin: 0 auto; }
+    <!-- LIBRARY SECTION -->
+  <section class="library" id="library">
+    
+    <!-- Заголовок и счетчик -->
+    <div class="section-header">
+      <h2 class="section-title">Библиотека</h2>
+      <div class="beer-counter" id="beerCounter">Загрузка...</div>
+    </div>
+    
+    <!-- Контейнер с фильтрами -->
+    <div class="controls">
+      <input type="text" id="search" placeholder="Поиск по названию...">
+      <select id="f-country"><option value="">Все страны</option></select>
+      <select id="f-style"><option value="">Все стили</option></select>
+      <select id="f-rating"><option value="">Любая оценка</option></select>
+      <select id="f-sort">
+        <option value="name-asc">По алфавиту (А-Я)</option>
+        <option value="name-desc">По алфавиту (Я-А)</option>
+        <option value="rating-desc">По рейтингу (5-1)</option>
+        <option value="rating-asc">По рейтингу (1-5)</option>
+      </select>
+    </div>
+
+    <div class="grid" id="grid"></div>
+  </section>
+    
+        /* ===== ЗАГОЛОВОК И СЧЕТЧИК ===== */
     .section-header {
       display: flex;
       justify-content: space-between;
@@ -91,6 +117,7 @@
       border-left: 5px solid #000;
       padding-left: 20px;
       letter-spacing: -0.02em;
+      margin: 0; /* Убираем лишние отступы */
     }
     .beer-counter {
       font-size: 0.85rem;
@@ -98,44 +125,52 @@
       padding: 10px 20px;
       background: #000;
       color: #fff;
-      border-radius: 50px;
+      border-radius: 50px; /* Овальная форма */
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      flex-shrink: 0;
     }
-    
-    /* ===== FILTERS ===== */
+
+    /* ===== ФИЛЬТРЫ (ПИЛЮЛИ) ===== */
     .controls {
       display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      grid-template-columns: repeat(4, 1fr); /* 4 колонки */
       gap: 12px;
       margin-bottom: 40px;
+      padding: 20px;
+      background: #f5f5f5; /* Светло-серый фон контейнера */
+      border-radius: 30px; /* Закругленные углы контейнера */
     }
+    
     .controls input, .controls select {
-      padding: 14px 18px;
-      border: none;
-      background: #fff;
-      border-radius: 16px;
+      width: 100%;
+      padding: 14px 20px;
+      border: none; /* Убираем рамки */
+      background: #fff; /* Белый фон самих фильтров */
+      border-radius: 50px; /* Форма пилюли */
       font-family: 'Space Grotesk', sans-serif;
       font-size: 0.9rem;
       font-weight: 500;
       color: #666;
       transition: all 0.3s;
-      width: 100%;
+      cursor: pointer;
     }
+
     .controls input:focus, .controls select:focus {
-      outline: none;
-      background: #fff;
+      outline: 2px solid #000; /* Тонкая обводка при клике */
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
+    
     .controls input::placeholder {
       color: #999;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
+    /* Адаптив для фильтров */
+    @media (max-width: 1024px) {
+      .controls { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .controls { grid-template-columns: 1fr; }
+      .section-title { font-size: 1.8rem; }
     }
     
      /* ===== 1. САМА КАРТОЧКА (Белый фон) ===== */

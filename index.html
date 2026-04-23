@@ -75,33 +75,9 @@
     .scroll-btn:hover { background: #fff; color: #000; }
 
     /* ===== LIBRARY SECTION ===== */
-    <!-- LIBRARY SECTION -->
-  <section class="library" id="library">
+    .library { padding: 60px 20px; max-width: 1400px; margin: 0 auto; }
     
-    <!-- Заголовок и счетчик -->
-    <div class="section-header">
-      <h2 class="section-title">Библиотека</h2>
-      <div class="beer-counter" id="beerCounter">Загрузка...</div>
-    </div>
-    
-    <!-- Контейнер с фильтрами -->
-    <div class="controls">
-      <input type="text" id="search" placeholder="Поиск по названию...">
-      <select id="f-country"><option value="">Все страны</option></select>
-      <select id="f-style"><option value="">Все стили</option></select>
-      <select id="f-rating"><option value="">Любая оценка</option></select>
-      <select id="f-sort">
-        <option value="name-asc">По алфавиту (А-Я)</option>
-        <option value="name-desc">По алфавиту (Я-А)</option>
-        <option value="rating-desc">По рейтингу (5-1)</option>
-        <option value="rating-asc">По рейтингу (1-5)</option>
-      </select>
-    </div>
-
-    <div class="grid" id="grid"></div>
-  </section>
-    
-        /* ===== ЗАГОЛОВОК И СЧЕТЧИК ===== */
+    /* ===== ЗАГОЛОВОК И СЧЕТЧИК ===== */
     .section-header {
       display: flex;
       justify-content: space-between;
@@ -117,7 +93,7 @@
       border-left: 5px solid #000;
       padding-left: 20px;
       letter-spacing: -0.02em;
-      margin: 0; /* Убираем лишние отступы */
+      margin: 0;
     }
     .beer-counter {
       font-size: 0.85rem;
@@ -125,7 +101,7 @@
       padding: 10px 20px;
       background: #000;
       color: #fff;
-      border-radius: 50px; /* Овальная форма */
+      border-radius: 50px;
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
@@ -133,20 +109,20 @@
     /* ===== ФИЛЬТРЫ (ПИЛЮЛИ) ===== */
     .controls {
       display: grid;
-      grid-template-columns: repeat(4, 1fr); /* 4 колонки */
+      grid-template-columns: repeat(4, 1fr);
       gap: 12px;
       margin-bottom: 40px;
       padding: 20px;
-      background: #f5f5f5; /* Светло-серый фон контейнера */
-      border-radius: 30px; /* Закругленные углы контейнера */
+      background: #f5f5f5;
+      border-radius: 30px;
     }
     
     .controls input, .controls select {
       width: 100%;
       padding: 14px 20px;
-      border: none; /* Убираем рамки */
-      background: #fff; /* Белый фон самих фильтров */
-      border-radius: 50px; /* Форма пилюли */
+      border: none;
+      background: #fff;
+      border-radius: 50px;
       font-family: 'Space Grotesk', sans-serif;
       font-size: 0.9rem;
       font-weight: 500;
@@ -156,7 +132,7 @@
     }
 
     .controls input:focus, .controls select:focus {
-      outline: 2px solid #000; /* Тонкая обводка при клике */
+      outline: 2px solid #000;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
     
@@ -164,21 +140,18 @@
       color: #999;
     }
 
-    /* Адаптив для фильтров */
-    @media (max-width: 1024px) {
-      .controls { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 640px) {
-      .controls { grid-template-columns: 1fr; }
-      .section-title { font-size: 1.8rem; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
     }
     
-     /* ===== 1. САМА КАРТОЧКА (Белый фон) ===== */
+    /* ===== 1. САМА КАРТОЧКА (Белый фон) ===== */
     .card {
-      height: 544px !important; /* Фиксированная высота */
+      height: 544px !important;
       border-radius: 24px;
       overflow: hidden;
-      background: #ffffff; /* Чистый белый фон, никакой грязи сверху */
+      background: #ffffff;
       display: flex;
       flex-direction: column;
       position: relative;
@@ -192,7 +165,7 @@
 
     /* ===== 2. КОНТЕЙНЕР ДЛЯ ФОТО (Тоже белый) ===== */
     .card-image-container {
-      flex: 1; /* Занимает все свободное место */
+      flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -200,14 +173,14 @@
       position: relative;
       z-index: 2;
       min-height: 0;
-      background: #ffffff; /* Белый фон */
+      background: #ffffff;
     }
 
     .card-image-container img {
       max-height: 100%;
       max-width: 100%;
       object-fit: contain;
-      filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2)); /* Тень для бутылки */
+      filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
     }
 
     /* ===== 3. РЕЙТИНГ ===== */
@@ -232,15 +205,14 @@
       width: 100%;
       height: 100%;
       background-image: url('img/cat-watermark-dark.png');
-      background-size: 100%; /* Размер морды */
-      background-position: center 20%; /* Чуть выше центра */
+      background-size: 70%;
+      background-position: center 20%;
       background-repeat: no-repeat;
-      opacity: 1; /* Прозрачность */
+      opacity: 0.25;
       z-index: 1;
       pointer-events: none;
     }
 
-    /* Светлая морда для развёрнутой карточки */
     .card-watermark-light {
       position: absolute;
       top: 0;
@@ -267,13 +239,12 @@
 
     /* ===== 5. БЛОК С ТЕКСТОМ (Градиент ТОЛЬКО тут) ===== */
     .card-content {
-      position: relative; /* Не absolute, чтобы прижиматься к низу */
+      position: relative;
       padding: 20px;
       z-index: 3;
       color: #ffffff;
-      /* Градиент начинается снизу и уходит в прозрачность вверх */
       background: linear-gradient(to top, rgba(0,0,0,0.95) 10%, rgba(0,0,0,0) 100%);
-      margin-top: auto; /* Прижимает блок к низу карточки */
+      margin-top: auto;
       border-bottom-left-radius: 24px;
       border-bottom-right-radius: 24px;
     }

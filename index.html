@@ -165,24 +165,22 @@
       transform: translateY(-5px);
     }
 
-    /* ===== 2. КОНТЕЙНЕР ДЛЯ ФОТО ПИВА ===== */
-    .card-image-container {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 30px 20px;
-      position: relative;
-      z-index: 2; /* Поверх фона */
-      min-height: 0;
-      background: transparent; /* Убираем белый фон */
+    /* ===== Картинка пива на всю карточку ===== */
+    .card-bg-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain; /* Вписывает бутылку, сохраняя пропорции */
+      object-position: center center; /* Центрируем бутылку */
+      z-index: 2; /* Слой 2: Над котом (1), под текстом (3) */
+      pointer-events: none;
     }
-    
-    .card-image-container img {
-      max-height: 100%;
-      max-width: 100%;
-      object-fit: contain;
-      filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
+
+    /* Скрываем старые контейнеры, если они есть */
+    .card-image-container {
+      display: none;
     }
 
     /* ===== 3. РЕЙТИНГ ===== */
@@ -486,18 +484,22 @@
         card.className = 'card';
         
         card.innerHTML = `
+          <div class="card-watermark"></div>
+          <img src="${b.img}" class="card-bg-image" alt="${b.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x540?text=Нет+фото'">
+          
           <div class="card-rating">${b.rating}/5</div>
-          <div class="card-image-container">
-            <img src="${b.img}" alt="${b.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x400?text=Нет+фото'">
-          </div>
+          
           <div class="card-content">
-            <h3 style="margin: 0 0 5px 0; font-size: 1.2rem; text-transform: uppercase;">${b.name}</h3>
-            <p style="margin: 0 0 5px 0; font-size: 0.9rem; opacity: 0.8;">${b.brand} • ${b.abv}% • ${b.country}</p>
+            <!-- Добавил text-shadow, чтобы текст читался на фоне светлых бутылок -->
+            <h3 style="margin: 0 0 5px 0; font-size: 1.2rem; text-transform: uppercase; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">${b.name}</h3>
+            <p style="margin: 0 0 15px 0; font-size: 0.9rem; opacity: 0.9; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">${b.brand} • ${b.abv}% • ${b.country}</p>
+            
             <div class="card-buttons">
               <button class="btn btn-primary" data-id="${b.id}">${tried ? funnyPhrases[b.id % funnyPhrases.length] : 'Пробовал?'}</button>
               <button class="btn btn-secondary btn-details">Подробнее</button>
             </div>
           </div>
+          
           <div class="card-details">
             <div class="detail-section">
               <div class="detail-label">Вердикт</div>
@@ -520,9 +522,6 @@
             </div>
           </div>
         `;
-        
-        grid.appendChild(card);
-      });
 
       // Кнопки "Пробовал"
       document.querySelectorAll('.btn-primary:not(.btn-close)').forEach(btn => {

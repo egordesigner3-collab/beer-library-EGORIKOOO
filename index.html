@@ -208,11 +208,11 @@
     /* ===== 5. БЛОК С ТЕКСТОМ (Градиент ТОЛЬКО тут) ===== */
     .card-content {
       position: relative;
-      padding: 20px;
-      min-height: 300px;
+      padding: 20px 20px 40px 20px; /* Увеличил отступ снизу для кнопок */
+      min-height: 220px; /* <-- ГЛАВНОЕ: фиксированная высота, чтобы градиент был выше */
       z-index: 3;
       color: #ffffff;
-      background: linear-gradient(to top, rgba(0,0,0,0.95) 10%, rgba(0,0,0,0) 100%);
+      background: linear-gradient(to top, rgba(0,0,0,0.95) 15%, rgba(0,0,0,0) 100%);
       margin-top: auto;
       border-bottom-left-radius: 24px;
       border-bottom-right-radius: 24px;

@@ -440,14 +440,11 @@
         beerCounter.textContent = `ВСЕГО ПИВАСОВ: ${beers.length}`;
         
         const countries = [...new Set(beers.map(b => b.country))].sort();
-        // Извлекаем только основную часть стиля (до скобки)
-        const styles = [...new Set(beers.map(b => {
-          const style = b.style.split('(')[0].trim();
-          return style;
-        }))].sort();
+        // Берем категории стилей из нового поля styleCategory
+        const categories = [...new Set(beers.map(b => b.styleCategory))].sort();
         const ratings = [...new Set(beers.map(b => b.rating))].sort((a, b) => b - a);
         countries.forEach(c => fCountry.innerHTML += '<option value="' + c + '">' + c + '</option>');
-        styles.forEach(s => fStyle.innerHTML += '<option value="' + s + '">' + s + '</option>');
+        categories.forEach(c => fStyle.innerHTML += '<option value="' + c + '">' + c + '</option>');
         ratings.forEach(r => fRating.innerHTML += '<option value="' + r + '">' + r + '/5</option>');
         render();
       } catch (error) {
@@ -468,7 +465,7 @@
       let filtered = beers.filter(b => {
         const matchQ = !q || b.name.toLowerCase().includes(q) || b.brand.toLowerCase().includes(q);
         const matchC = !c || b.country === c;
-        const matchS = !s || b.style.split('(')[0].trim() === s;
+        const matchS = !s || b.styleCategory === s;
         const matchR = !r || b.rating === parseInt(r);
         return matchQ && matchC && matchS && matchR;
       });

@@ -468,7 +468,7 @@
       let filtered = beers.filter(b => {
         const matchQ = !q || b.name.toLowerCase().includes(q) || b.brand.toLowerCase().includes(q);
         const matchC = !c || b.country === c;
-        const matchS = !s || b.style === s;
+        const matchS = !s || b.style.split('(')[0].trim() === s;
         const matchR = !r || b.rating === parseInt(r);
         return matchQ && matchC && matchS && matchR;
       });

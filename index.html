@@ -47,19 +47,43 @@
     }
     
     .hero-main-title {
-      font-size: clamp(3rem, 12vw, 8rem);
+      font-size: clamp(2.5rem, 10vw, 7rem);
       font-weight: 700;
       line-height: 1.1;
       letter-spacing: -0.03em;
       text-transform: uppercase;
       margin-bottom: 20px;
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
       gap: 10px;
+      width: 100%;
+      max-width: 1400px;
+      padding: 0 20px;
     }
     
-    .hero-main-title span {
-      display: block;
+    .hero-main-title span:nth-child(1) {
+      /* WELCOME - слева сверху */
+      text-align: left;
+      align-self: start;
+    }
+    
+    .hero-main-title span:nth-child(2) {
+      /* TO - справа сверху */
+      text-align: right;
+      align-self: start;
+    }
+    
+    .hero-main-title span:nth-child(3) {
+      /* THE - слева снизу */
+      text-align: left;
+      align-self: end;
+    }
+    
+    .hero-main-title span:nth-child(4) {
+      /* BEERDOM - справа снизу */
+      text-align: right;
+      align-self: end;
     }
     
     .hero-desc {
@@ -381,7 +405,11 @@
       .controls { grid-template-columns: 1fr; }
       .hero-brand { font-size: 0.6rem; }
       .hero-cat { width: 200px; }
-      .hero-main-title { font-size: clamp(2rem, 8vw, 4rem); }
+      .hero-main-title { 
+        font-size: clamp(1.5rem, 6vw, 3rem);
+        grid-template-columns: 1fr 1fr;
+        gap: 5px;
+      }
       .hero-desc { font-size: 0.7rem; }
       .hero-btn { padding: 12px 30px; font-size: 0.75rem; }
       .section-header { flex-direction: column; align-items: flex-start; }
@@ -399,8 +427,10 @@
       <img src="img/logo.png" alt="Cat Logo" class="hero-cat">
     </div>
     <h1 class="hero-main-title">
-      <span>WELCOME TO</span>
-      <span>THE BEERDOM</span>
+      <span>WELCOME</span>
+      <span>TO</span>
+      <span>THE</span>
+      <span>BEERDOM</span>
     </h1>
     <p class="hero-desc">ЧЕСТНАЯ БИБЛИОТЕКА ПРОВЕРЕННОГО ПИВА</p>
     <a href="#library" class="hero-btn">В библиотеку</a>

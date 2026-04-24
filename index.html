@@ -411,32 +411,22 @@
     const fRating = document.getElementById('f-rating');
     const fSort = document.getElementById('f-sort');
     const beerCounter = document.getElementById('beerCounter');
-
     let beers = [];
 
-    // Загружаем данные из JSON
     async function loadBeers() {
       try {
         const response = await fetch('beers.json');
         if (!response.ok) throw new Error('Не удалось загрузить beers.json');
         beers = await response.json();
-        
-        // Изначальная сортировка по имени
         beers.sort((a, b) => a.name.localeCompare(b.name, 'ru'));
-        
-        // Обновляем счётчик
         beerCounter.textContent = `ВСЕГО ПИВАСОВ: ${beers.length}`;
         
-        // Заполняем фильтры
         const countries = [...new Set(beers.map(b => b.country))].sort();
         const styles = [...new Set(beers.map(b => b.style))].sort();
         const ratings = [...new Set(beers.map(b => b.rating))].sort((a, b) => b - a);
-
         countries.forEach(c => fCountry.innerHTML += '<option value="' + c + '">' + c + '</option>');
         styles.forEach(s => fStyle.innerHTML += '<option value="' + s + '">' + s + '</option>');
         ratings.forEach(r => fRating.innerHTML += '<option value="' + r + '">' + r + '/5</option>');
-        
-        // Рендерим
         render();
       } catch (error) {
         console.error('Ошибка загрузки данных:', error);
@@ -461,15 +451,10 @@
         return matchQ && matchC && matchS && matchR;
       });
 
-      if (sort === 'name-asc') {
-        filtered.sort((a, b) => a.name.localeCompare(b.name, 'ru'));
-      } else if (sort === 'name-desc') {
-        filtered.sort((a, b) => b.name.localeCompare(a.name, 'ru'));
-      } else if (sort === 'rating-desc') {
-        filtered.sort((a, b) => b.rating - a.rating);
-      } else if (sort === 'rating-asc') {
-        filtered.sort((a, b) => a.rating - b.rating);
-      }
+      if (sort === 'name-asc') filtered.sort((a, b) => a.name.localeCompare(b.name, 'ru'));
+      else if (sort === 'name-desc') filtered.sort((a, b) => b.name.localeCompare(a.name, 'ru'));
+      else if (sort === 'rating-desc') filtered.sort((a, b) => b.rating - a.rating);
+      else if (sort === 'rating-asc') filtered.sort((a, b) => a.rating - b.rating);
 
       if (filtered.length === 0) {
         grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px;">Ничего не найдено</div>';
@@ -486,59 +471,36 @@
         card.innerHTML = `
           <div class="card-watermark"></div>
           <img src="${b.img}" class="card-bg-image" alt="${b.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x540?text=Нет+фото'">
-          
           <div class="card-rating">${b.rating}/5</div>
-          
           <div class="card-content">
-            <!-- Добавил text-shadow, чтобы текст читался на фоне светлых бутылок -->
             <h3 style="margin: 0 0 5px 0; font-size: 1.2rem; text-transform: uppercase; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">${b.name}</h3>
             <p style="margin: 0 0 15px 0; font-size: 0.9rem; opacity: 0.9; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">${b.brand} • ${b.abv}% • ${b.country}</p>
-            
             <div class="card-buttons">
               <button class="btn btn-primary" data-id="${b.id}">${tried ? funnyPhrases[b.id % funnyPhrases.length] : 'Пробовал?'}</button>
               <button class="btn btn-secondary btn-details">Подробнее</button>
             </div>
           </div>
-          
           <div class="card-details">
-            <div class="detail-section">
-              <div class="detail-label">Вердикт</div>
-              <div class="detail-value verdict ${verdictClass}">${verdict}</div>
-            </div>
-            <div class="detail-section">
-              <div class="detail-label">Стиль</div>
-              <div class="detail-value">${b.style}</div>
-            </div>
-            <div class="detail-section">
-              <div class="detail-label">Где купить</div>
-              <div class="detail-value">📍 ${b.where}</div>
-            </div>
-            <div class="detail-section">
-              <div class="detail-label">Вкус</div>
-              <div class="detail-value">${b.taste}</div>
-            </div>
-            <div class="card-buttons" style="margin-top: 24px;">
-              <button class="btn btn-primary btn-close">Скрыть</button>
-            </div>
+            <div class="detail-section"><div class="detail-label">Вердикт</div><div class="detail-value verdict ${verdictClass}">${verdict}</div></div>
+            <div class="detail-section"><div class="detail-label">Стиль</div><div class="detail-value">${b.style}</div></div>
+            <div class="detail-section"><div class="detail-label">Где купить</div><div class="detail-value">📍 ${b.where}</div></div>
+            <div class="detail-section"><div class="detail-label">Вкус</div><div class="detail-value">${b.taste}</div></div>
+            <div class="card-buttons" style="margin-top: 24px;"><button class="btn btn-primary btn-close">Скрыть</button></div>
           </div>
         `;
+        grid.appendChild(card);
+      });
 
-      // Кнопки "Пробовал"
+      // Обработчики кнопок
       document.querySelectorAll('.btn-primary:not(.btn-close)').forEach(btn => {
         btn.addEventListener('click', function(e) {
           if (this.classList.contains('btn-details') || this.classList.contains('btn-close')) return;
-          
           const id = this.getAttribute('data-id');
           const current = localStorage.getItem('beer_' + id) === 'true';
-          
           if (!current) {
             localStorage.setItem('beer_' + id, 'true');
-            const randomPhrase = funnyPhrases[id % funnyPhrases.length];
-            this.textContent = randomPhrase;
-            setTimeout(() => {
-              localStorage.setItem('beer_' + id, 'false');
-              render();
-            }, 3000);
+            this.textContent = funnyPhrases[id % funnyPhrases.length];
+            setTimeout(() => { localStorage.setItem('beer_' + id, 'false'); render(); }, 3000);
           } else {
             localStorage.setItem('beer_' + id, 'false');
             render();
@@ -546,18 +508,12 @@
         });
       });
 
-      // Кнопки "Подробнее"
       document.querySelectorAll('.btn-details').forEach(btn => {
-        btn.addEventListener('click', function() {
-          this.closest('.card').classList.add('expanded');
-        });
+        btn.addEventListener('click', function() { this.closest('.card').classList.add('expanded'); });
       });
 
-      // Кнопки "Скрыть"
       document.querySelectorAll('.btn-close').forEach(btn => {
-        btn.addEventListener('click', function() {
-          this.closest('.card').classList.remove('expanded');
-        });
+        btn.addEventListener('click', function() { this.closest('.card').classList.remove('expanded'); });
       });
     }
 
@@ -566,8 +522,6 @@
     fStyle.addEventListener('change', render);
     fRating.addEventListener('change', render);
     fSort.addEventListener('change', render);
-
-    // Запуск
     loadBeers();
   </script>
 </body>

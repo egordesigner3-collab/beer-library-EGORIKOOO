@@ -733,7 +733,7 @@
         });
       });
 
-    } // <-- ЗАКРЫВАЕМ ФУНКЦИЮ render()
+    } // <--- ВОТ ЭТОЙ СКОБКИ НЕ ХВАТАЛО! Она закрывает функцию render()
 
     searchInput.addEventListener('input', render);
     fCountry.addEventListener('change', render);
@@ -741,7 +741,6 @@
     fRating.addEventListener('change', render);
     fSort.addEventListener('change', render);
     loadBeers();
-  } // <-- ЗАКРЫВАЕМ ФУНКЦИЮ loadBeers() (хотя она уже закрыта выше, но на всякий случай)
   </script>
 </body>
 </html>

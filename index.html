@@ -491,12 +491,60 @@
   </footer>
 
   <script>
-    const funnyPhrases = [
-      "Красавчик! 🍺", "Вот это ты молодец!", "Знал, что ты оценишь!", 
-      "Отличный выбор, братан!", "Мастер дегустации! 🏆", "Принято! 👌",
-      "Пей ответственно! 🍻", "Ты знаешь толк в этом!", "Мудрый выбор! 🧐",
-      "Одобряю-с! 🧐", "Шедевр! ✨", "Будет что вспомнить! ", "Вкуснотища! 😋"
-    ];
+    // Фразы в зависимости от рейтинга
+    const ratingPhrases = {
+      5: [
+        "Красавчик! 🍺", 
+        "Вот это уровень! 🔥", 
+        "Знал, что ты оценишь! 💎",
+        "Отличный выбор, братан! 👑", 
+        "Мастер дегустации! 🏆", 
+        "Идеально! ✨",
+        "Ты знаешь толк! 🎯", 
+        "Шедевр! 🌟", 
+        "Вкуснотища! 😋",
+        "Это топ! 🚀",
+        "Бог пива одобряет! 🙌"
+      ],
+      4: [
+        "Неплохо! 👍", 
+        "Хороший выбор! ✅", 
+        "Вполне себе! 👌",
+        "Нормальное пивцо! 🍻", 
+        "Так держать! 💪", 
+        "Неплохо, братан! 😎",
+        "Вполне неплохо! ⭐", 
+        "Хорошо! 👏"
+      ],
+      3: [
+        "Ну такое... 🤷", 
+        "Бывает и лучше 🤔", 
+        "На троечку 😐",
+        "Средненько ", 
+        "Ну сойдет 🤨", 
+        "Не впечатлило 😕",
+        "Так себе 🙃"
+      ],
+      2: [
+        "Зачем? 😕", 
+        "Ну зачем ты так? 😢", 
+        "Не стоило 😞",
+        "Плохой выбор 👎", 
+        "Лучше бы не пробовал 😵", 
+        "Ой, зачем... 😫",
+        "Не советую 🚫"
+      ],
+      1: [
+        "За что? 💀", 
+        "Это было больно 😱", 
+        "Ужас просто 🤮",
+        "Никогда больше! ️", 
+        "Ты зачем это пил? 😵‍💫", 
+        "Кошмар! 👻",
+        "Жесть просто! 💩",
+        "АД! 🔥💀"
+      ]
+    };
 
     const grid = document.getElementById('grid');
     const searchInput = document.getElementById('search');
@@ -618,15 +666,27 @@
         grid.appendChild(card);
       });
 
-      // Обработчики кнопок
       document.querySelectorAll('.btn-primary:not(.btn-close)').forEach(btn => {
         btn.addEventListener('click', function(e) {
           if (this.classList.contains('btn-details') || this.classList.contains('btn-close')) return;
+          
           const id = this.getAttribute('data-id');
           const current = localStorage.getItem('beer_' + id) === 'true';
+          
           if (!current) {
             localStorage.setItem('beer_' + id, 'true');
-            this.textContent = funnyPhrases[id % funnyPhrases.length];
+            
+            // Находим пиво по ID и получаем его рейтинг
+            const beer = beers.find(b => b.id == id);
+            const rating = beer ? beer.rating : 3;
+            
+            // Получаем фразы для этого рейтинга
+            const phrases = ratingPhrases[rating] || ratingPhrases[3];
+            
+            // Выбираем случайную фразу
+            const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+            
+            this.textContent = randomPhrase;
             setTimeout(() => { localStorage.setItem('beer_' + id, 'false'); render(); }, 3000);
           } else {
             localStorage.setItem('beer_' + id, 'false');

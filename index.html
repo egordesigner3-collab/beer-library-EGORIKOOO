@@ -377,14 +377,14 @@
     .detail-value.verdict {
       font-size: 1rem;
       font-weight: 600;
+      line-height: 1.4;
     }
-
-    .detail-value.verdict.positive::before {
-      content: "✅ ";
-    }
-
-    .detail-value.verdict.negative::before {
-      content: "❌ ";
+    
+    /* Убираем старые иконки, так как эмодзи уже в тексте */
+    .detail-value.verdict.positive::before,
+    .detail-value.verdict.negative::before,
+    .detail-value.verdict.neutral::before {
+      content: "";
     }
 
     /* ===== FOOTER ===== */
@@ -558,8 +558,18 @@
 
       filtered.forEach(b => {
         const tried = localStorage.getItem('beer_' + b.id) === 'true';
-        const verdict = b.repeat === true ? 'Рекомендуется' : 'Не рекомендуется';
-        const verdictClass = b.repeat === true ? 'positive' : 'negative';
+        // Определяем вердикт по рейтингу
+        const verdicts = {
+          5: { text: 'Рекомендуется ❤️', class: 'positive' },
+          4: { text: 'Можно попробовать 👍', class: 'positive' },
+          3: { text: 'Пойдет 👌', class: 'neutral' },
+          2: { text: 'Не рекомендуется 👎', class: 'negative' },
+          1: { text: 'Ужасно 💀', class: 'negative' }
+        };
+        
+        const verdictData = verdicts[b.rating] || verdicts[3];
+        const verdict = verdictData.text;
+        const verdictClass = verdictData.class;
         const card = document.createElement('div');
         card.className = 'card';
         
